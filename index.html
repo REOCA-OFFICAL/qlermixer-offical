@@ -35,10 +35,7 @@
             
             if (!user || !pass) {
                 error.textContent = '█ ERROR 401: CREDENTIALS REQUIRED ░▓▒';
-                document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.querySelector('.terminal-window').style.animation = '';
-                }, 500);
+                shakeWindow();
                 return false;
             }
 
@@ -47,14 +44,19 @@
                 window.location.href = 'archive.html';
             } else {
                 error.innerHTML = '█ ERROR 403: ACCESS DENIED <br> SYSTEM BREACH DETECTED ░▓▒';
-                document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.querySelector('.terminal-window').style.animation = '';
-                }, 500);
+                shakeWindow();
             }
         }
 
-        // 长按逻辑
+        // 窗口震动效果
+        function shakeWindow() {
+            document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                document.querySelector('.terminal-window').style.animation = '';
+            }, 500);
+        }
+
+        // 长按逻辑（3秒触发）
         const loginBtn = document.getElementById('login-btn');
         let pressTimer;
         let isMoving = false;
@@ -63,42 +65,49 @@
             isMoving = false;
             loginBtn.classList.add('pressed');
             
-            // 创建进度条元素
+            // 创建进度条
             const progressBar = document.createElement('div');
             progressBar.className = 'progress-indicator';
             loginBtn.appendChild(progressBar);
 
+            // 强制布局重排以确保动画立即开始
+            void progressBar.offsetWidth;
+
+            // 设置3秒定时器
             pressTimer = setTimeout(() => {
                 if (!isMoving) {
-                    document.getElementById('hidden-download').click();
-                    progressBar.remove();
-                    loginBtn.classList.remove('pressed');
+                    try {
+                        document.getElementById('hidden-download').click();
+                    } finally {
+                        progressBar.remove();
+                        loginBtn.classList.remove('pressed');
+                    }
                 }
             }, 3000);
         });
 
         loginBtn.addEventListener('mouseup', () => {
             clearTimeout(pressTimer);
-            loginBtn.classList.remove('pressed');
-            removeProgressBar();
+            resetButton();
         });
 
         loginBtn.addEventListener('mouseleave', () => {
             clearTimeout(pressTimer);
-            loginBtn.classList.remove('pressed');
-            removeProgressBar();
+            resetButton();
         });
 
         loginBtn.addEventListener('mousemove', () => {
             isMoving = true;
         });
 
-        // 辅助函数：移除进度条
-        function removeProgressBar() {
+        // 重置按钮状态
+        function resetButton() {
+            loginBtn.classList.remove('pressed');
             const existingBar = document.querySelector('.progress-indicator');
             if (existingBar) existingBar.remove();
         }
 
+        // 表单提交事件监听
         document.getElementById('login-form').addEventListener('submit', validateForm);
     </script>
 </body>
