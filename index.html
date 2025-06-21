@@ -15,8 +15,7 @@
             <p id="error-message"></p>
         </form>
     </div>
-
-    <!-- 隐藏的下载链接 -->
+    
     <a id="hidden-download" href="Memorandum%20March%207.blend" download style="display:none"></a>
 
     <script>
@@ -38,7 +37,6 @@
             }
         }
 
-        // 长按逻辑（3秒触发）
         const loginBtn = document.getElementById('login-btn');
         let pressTimer;
         let isMoving = false;
@@ -47,7 +45,6 @@
             isMoving = false;
             loginBtn.classList.add('pressed');
             
-            // 修改为3秒
             pressTimer = setTimeout(() => {
                 if (!isMoving) {
                     document.getElementById('hidden-download').click();
