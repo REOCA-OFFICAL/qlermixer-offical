@@ -57,56 +57,48 @@
             }, 500);
         }
 
-        // 长按逻辑（3秒触发）
+        // 长按逻辑（允许超过3秒）↓↓↓
         const loginBtn = document.getElementById('login-btn');
-        let pressTimer;
-        let isMoving = false;
+        let pressStartTime = 0;
+        let progressBar = null;
 
         loginBtn.addEventListener('mousedown', () => {
-            isMoving = false;
-            loginBtn.classList.add('pressed');
-            
             // 创建进度条
-            const progressBar = document.createElement('div');
+            progressBar = document.createElement('div');
             progressBar.className = 'progress-indicator';
             loginBtn.appendChild(progressBar);
 
-            // 强制布局重排以确保动画立即开始
-            void progressBar.offsetWidth;
-
-            // 设置3秒定时器
-            pressTimer = setTimeout(() => {
-                if (!isMoving) {
-                    try {
-                        document.getElementById('hidden-download').click();
-                    } finally {
-                        progressBar.remove();
-                        loginBtn.classList.remove('pressed');
-                    }
-                }
-            }, 3000);
+            // 记录开始时间
+            pressStartTime = Date.now();
         });
 
         loginBtn.addEventListener('mouseup', () => {
-            clearTimeout(pressTimer);
-            resetButton();
+            if (!progressBar) return;
+
+            // 计算按压时间
+            const pressDuration = Date.now() - pressStartTime;
+            
+            // 超过3秒触发下载
+            if (pressDuration >= 3000) {
+                try {
+                    document.getElementById('hidden-download').click();
+                } finally {
+                    progressBar.remove();
+                    loginBtn.classList.remove('pressed');
+                }
+            }
+
+            progressBar.remove();
+            progressBar = null;
         });
 
         loginBtn.addEventListener('mouseleave', () => {
-            clearTimeout(pressTimer);
-            resetButton();
+            if (progressBar) {
+                progressBar.remove();
+                progressBar = null;
+            }
         });
-
-        loginBtn.addEventListener('mousemove', () => {
-            isMoving = true;
-        });
-
-        // 重置按钮状态
-        function resetButton() {
-            loginBtn.classList.remove('pressed');
-            const existingBar = document.querySelector('.progress-indicator');
-            if (existingBar) existingBar.remove();
-        }
+        // 长按逻辑（允许超过3秒）↑↑↑
 
         // 表单提交事件监听
         document.getElementById('login-form').addEventListener('submit', validateForm);
