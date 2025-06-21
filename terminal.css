@@ -8,15 +8,14 @@ body {
     position: relative;
 }
 
-/* 增强扫描线效果 */
 body::after {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 5px; /* 原2px → 5px */
+    height: 5px; 
     background: linear-gradient(to right, #000, #00ff00, #000);
-    animation: scan 3s infinite; /* 原5s → 3s 更快扫描 */
-    opacity: 0.2; /* 原0.1 → 0.2 更明显 */
+    animation: scan 3s infinite; 
+    opacity: 0.2; 
 }
 
 .terminal-window {
@@ -84,10 +83,9 @@ button:hover {
     100% { transform: translateY(100vh); }
 }
 
-/* 隐藏文件下载样式 */
 .hidden-file {
     position: fixed;
-    bottom: -50px; /* 初始隐藏在屏幕下方 */
+    bottom: -50px; 
     left: 50%;
     transform: translateX(-50%);
     background: #1a1a1a;
@@ -99,7 +97,7 @@ button:hover {
 }
 
 .hidden-file:hover {
-    bottom: 10px; /* 悬停时上移 */
+    bottom: 10px; 
     box-shadow: 0 0 10px #00ff00;
 }
 
