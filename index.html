@@ -8,28 +8,45 @@
 <body>
     <div class="terminal-window">
         <h1>█▒▓░ AUTHORIZATION REQUIRED ░▓▒█</h1>
-        <form class="login-form" onsubmit="return validateLogin(event)">
-            <input type="text" id="username" placeholder="ACCESS CODE" required>
-            <input type="password" id="password" placeholder="BIOMETRIC KEY" required>
+        <form class="login-form" id="login-form">
+            <input type="text" id="username" placeholder="ACCESS CODE">
+            <input type="password" id="password" placeholder="BIOMETRIC KEY">
             <button type="submit" id="login-btn">INITIATE SESSION</button>
-            <p id="error-message"></p>
+            <div id="error-message"></div>
         </form>
     </div>
-    
+
+    <!-- 隐藏的下载链接 -->
     <a id="hidden-download" href="Memorandum%20March%207.blend" download style="display:none"></a>
 
     <script>
-        function validateLogin(e) {
+        // Base64加密凭证存储
+        const credentials = {
+            user: atob('T1BfQURtWHM='),
+            pass: atob('RjUtWnRZI1I6UHguMz0=')
+        };
+
+        // 验证函数
+        function validateForm(e) {
             e.preventDefault();
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            const error = document.getElementById('error-message');
             
-            if (user === 'OP_ADmXs' && pass === 'F5-ZtY#R:Px.3=') {
+            if (!user || !pass) {
+                error.textContent = '█ ERROR 401: CREDENTIALS REQUIRED ░▓▒';
+                document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.terminal-window').style.animation = '';
+                }, 500);
+                return false;
+            }
+
+            if (user === credentials.user && pass === credentials.pass) {
                 localStorage.setItem('auth', 'true');
                 window.location.href = 'archive.html';
             } else {
-                document.getElementById('error-message').textContent = 
-                    '█ ERROR 403: ACCESS DENIED █';
+                error.innerHTML = '█ ERROR 403: ACCESS DENIED <br> SYSTEM BREACH DETECTED ░▓▒';
                 document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
                 setTimeout(() => {
                     document.querySelector('.terminal-window').style.animation = '';
@@ -37,6 +54,7 @@
             }
         }
 
+        // 长按逻辑
         const loginBtn = document.getElementById('login-btn');
         let pressTimer;
         let isMoving = false;
@@ -45,9 +63,15 @@
             isMoving = false;
             loginBtn.classList.add('pressed');
             
+            // 创建进度条元素
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-indicator';
+            loginBtn.appendChild(progressBar);
+
             pressTimer = setTimeout(() => {
                 if (!isMoving) {
                     document.getElementById('hidden-download').click();
+                    progressBar.remove();
                     loginBtn.classList.remove('pressed');
                 }
             }, 3000);
@@ -56,16 +80,27 @@
         loginBtn.addEventListener('mouseup', () => {
             clearTimeout(pressTimer);
             loginBtn.classList.remove('pressed');
+            removeProgressBar();
         });
 
         loginBtn.addEventListener('mouseleave', () => {
             clearTimeout(pressTimer);
             loginBtn.classList.remove('pressed');
+            removeProgressBar();
         });
 
         loginBtn.addEventListener('mousemove', () => {
             isMoving = true;
         });
+
+        // 辅助函数：移除进度条
+        function removeProgressBar() {
+            const existingBar = document.querySelector('.progress-indicator');
+            if (existingBar) existingBar.remove();
+        }
+
+        // 表单提交事件监听
+        document.getElementById('login-form').addEventListener('submit', validateForm);
     </script>
 </body>
 </html>
