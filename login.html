@@ -1,38 +1,38 @@
-<!-- login.html -->
+<!-- archive.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OPADEX SYSTEM 1.0</title>
+    <title>DATA ARCHIVE</title>
     <link rel="stylesheet" href="terminal.css">
 </head>
 <body>
-    <div class="terminal-window">
-        <h1>█▒▓░ AUTHORIZATION REQUIRED ░▓▒█</h1>
-        <form class="login-form" onsubmit="return validateLogin(event)">
-            <input type="text" id="username" placeholder="ACCESS CODE" required>
-            <input type="password" id="password" placeholder="BIOMETRIC KEY" required>
-            <button type="submit">INITIATE SESSION</button>
-            <p id="error-message"></p>
-        </form>
-        <p class="small-text">█ AUTH LEVEL: CLASSIFIED ░ INTERNAL USE ONLY █</p>
+    <div class="terminal-window archive">
+        <h1>█▒▓░ DATABASE QUERY ░▓▒█</h1>
+        <div class="search-container">
+            <input type="text" id="query" placeholder="ENTER FILE NAME">
+            <button onclick="searchFile()">EXECUTE</button>
+        </div>
+        <div id="results" class="results"></div>
     </div>
     <script>
-        function validateLogin(e) {
-            e.preventDefault();
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            
-            // ███ 已修改凭证 ███
-            if (user === 'OP_ADmXs' && pass === 'F5-ZtY#R:Px.3=') {
-                localStorage.setItem('auth', 'true');
-                window.location.href = 'index.html';
+        const database = {
+            "PROJECT_NEXUS": "nexus_report.pdf",
+            "TEST_SUBJECT_7": "subject7_logs.zip"
+        };
+
+        function searchFile() {
+            const query = document.getElementById('query').value.toUpperCase();
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            if (query in database) {
+                const link = document.createElement('a');
+                link.href = database[query];
+                link.textContent = `DOWNLOAD ${query}`;
+                link.className = 'download-link';
+                resultsDiv.appendChild(link);
             } else {
-                document.getElementById('error-message').textContent = 
-                    '█ ERROR 403: ACCESS DENIED █';
-                document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.querySelector('.terminal-window').style.animation = '';
-                }, 500);
+                resultsDiv.innerHTML = '█ ERROR 404: FILE NOT FOUND █';
             }
         }
     </script>
