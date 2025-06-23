@@ -6,14 +6,15 @@
     <link rel="stylesheet" href="terminal.css">
 </head>
 <body>
-    <div class="terminal-window">
-        <h1>█▒▓░ AUTHORIZATION REQUIRED ░▓▒█</h1>
-        <form class="login-form" id="login-form">
-            <input type="text" id="username" placeholder="ACCESS CODE">
-            <input type="password" id="password" placeholder="BIOMETRIC KEY">
-            <button type="submit" id="login-btn">INITIATE SESSION</button>
-            <div id="error-message"></div>
-        </form>
+    <div class="terminal-container">
+        <div class="terminal-window">
+            <h1>█▒▓░ AUTHORIZATION REQUIRED ░▓▒█</h1>
+            <form class="login-form" id="login-form">
+                <input type="text" id="username" placeholder="ACCESS CODE">
+                <input type="password" id="password" placeholder="BIOMETRIC KEY">
+                <button type="submit" id="login-btn">INITIATE SESSION</button>
+            </form>
+        </div>
     </div>
 
     <a id="hidden-download" href="MemorandumMarch7th.blend" download style="display:none"></a>
@@ -21,23 +22,14 @@
     <script>
         // 混淆凭证存储（使用多层编码）
         const cipher = {
-            // Base64编码 + 字符位移
             u1: atob('T1BfQURtWHM='), // OP_ADmXs
-            u2: atob('Uk1fWk5zVg=='), // RM_ZNsV
             p1: atob('RjUtWnRZI1I6UHguMz0='), // F5-ZtY#R:Px.3=
-            p2: atob('SjJfWmFZI1I6UHguMz0='), // J2_ZaY#R:Px.3=
         };
 
-        // 动态选择凭证（模拟硬件指纹验证）
         function getCredentials() {
-            // 硬件特征码模拟器
-            const hwId = 'X7gT!9kL$3mQ'.split('')
-                .map(c => c.charCodeAt(0)).reduce((a,b) => a + b, 0);
-            
-            // 动态凭证选择器
             return {
-                user: (hwId % 2 === 0) ? cipher.u1 : cipher.u2,
-                pass: (hwId % 2 === 0) ? cipher.p1 : cipher.p2
+                user: cipher.u1,
+                pass: cipher.p1
             };
         }
 
@@ -48,12 +40,10 @@
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
             
-            // 简化验证逻辑（避免多余提示）
             if (user === credentials.user && pass === credentials.pass) {
                 localStorage.setItem('auth', 'true');
                 window.location.href = 'archive.html';
             } else {
-                // 静默失败（无具体提示）
                 document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
                 setTimeout(() => {
                     document.querySelector('.terminal-window').style.animation = '';
@@ -61,28 +51,22 @@
             }
         }
 
-        // 长按逻辑（允许超过3秒）
+        // 长按逻辑
         const loginBtn = document.getElementById('login-btn');
         let pressStartTime = 0;
         let progressBar = null;
 
         loginBtn.addEventListener('mousedown', () => {
-            // 创建进度条
             progressBar = document.createElement('div');
             progressBar.className = 'progress-indicator';
             loginBtn.appendChild(progressBar);
-
-            // 记录开始时间
             pressStartTime = Date.now();
         });
 
         loginBtn.addEventListener('mouseup', () => {
             if (!progressBar) return;
-
-            // 计算按压时间
             const pressDuration = Date.now() - pressStartTime;
             
-            // 超过3秒触发下载
             if (pressDuration >= 3000) {
                 try {
                     document.getElementById('hidden-download').click();
@@ -91,7 +75,6 @@
                     progressBar = null;
                 }
             }
-
             progressBar.remove();
             progressBar = null;
         });
