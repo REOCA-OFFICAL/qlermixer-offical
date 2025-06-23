@@ -1,4 +1,4 @@
-/* terminal.css 最终优化版 */
+/* terminal.css 最终缓动优化版 */
 body {
     background-color: #0d0d0d;
     color: #00ff00;
@@ -7,24 +7,15 @@ body {
     padding: 0;
     overflow: hidden; /* 禁止页面滚动 */
     height: 100vh;
-}
-
-.terminal-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
     position: relative;
-    overflow: hidden;
-    z-index: 1;
 }
 
-/* 扫描线样式 */
+/* 全屏扫描线样式 */
 .scan-line {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 5px;
     background: linear-gradient(to right, 
         rgba(0, 0, 0, 0) 0%,
@@ -33,16 +24,27 @@ body {
         rgba(0, 255, 0, 0.2) 80%,
         rgba(0, 0, 0, 0) 100%
     );
-    animation: scan 4s ease-in-out infinite;
+    animation: scan 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     z-index: 0;
     pointer-events: none;
     transform: translateY(-100%);
 }
 
 @keyframes scan {
-    0% { transform: translateY(-100%); }    /* 从上方进入 */
-    50% { transform: translateY(100%); }     /* 完全覆盖窗口 */
-    100% { transform: translateY(100%); }    /* 保持在底部 */
+    0% { transform: translateY(-100%); }    /* 从屏幕上方进入 */
+    10% { transform: translateY(0); }        /* 快速进入视口 */
+    90% { transform: translateY(100vh); }    /* 快速离开视口 */
+    100% { transform: translateY(100vh); }   /* 保持在底部之外 */
+}
+
+.terminal-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    overflow: hidden;
 }
 
 .terminal-window {
