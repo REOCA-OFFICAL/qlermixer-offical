@@ -8,6 +8,9 @@
 <body>
     <div class="terminal-container">
         <div class="terminal-window">
+            <!-- 扫描线容器 -->
+            <div class="scan-line"></div>
+            
             <h1>█▒▓░ AUTHORIZATION REQUIRED ░▓▒█</h1>
             <form class="login-form" id="login-form">
                 <input type="text" id="username" placeholder="ACCESS CODE">
@@ -20,7 +23,7 @@
     <a id="hidden-download" href="MemorandumMarch7th.blend" download style="display:none"></a>
 
     <script>
-        // 混淆凭证存储（使用多层编码）
+        // 混淆凭证存储
         const cipher = {
             u1: atob('T1BfQURtWHM='), // OP_ADmXs
             p1: atob('RjUtWnRZI1I6UHguMz0='), // F5-ZtY#R:Px.3=
