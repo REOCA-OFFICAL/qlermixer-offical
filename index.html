@@ -16,6 +16,8 @@
                 <input type="text" id="username" placeholder="ACCESS CODE">
                 <input type="password" id="password" placeholder="BIOMETRIC KEY">
                 <button type="submit" id="login-btn">INITIATE SESSION</button>
+                <!-- 错误提示容器 -->
+                <div id="error-message"></div>
             </form>
         </div>
     </div>
@@ -42,16 +44,31 @@
             const credentials = getCredentials();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
+            const error = document.getElementById('error-message');
             
+            if (!user || !pass) {
+                // 恢复原有终端风格错误提示
+                error.textContent = '█ ERROR 401: CREDENTIALS REQUIRED ░▓▒';
+                shakeWindow();
+                return false;
+            }
+
             if (user === credentials.user && pass === credentials.pass) {
                 localStorage.setItem('auth', 'true');
                 window.location.href = 'archive.html';
             } else {
-                document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
-                setTimeout(() => {
-                    document.querySelector('.terminal-window').style.animation = '';
-                }, 500);
+                // 恢复原有终端风格错误提示
+                error.innerHTML = '█ ERROR 403: ACCESS DENIED <br> SYSTEM BREACH DETECTED ░▓▒';
+                shakeWindow();
             }
+        }
+
+        // 窗口震动效果
+        function shakeWindow() {
+            document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                document.querySelector('.terminal-window').style.animation = '';
+            }, 500);
         }
 
         // 长按逻辑
