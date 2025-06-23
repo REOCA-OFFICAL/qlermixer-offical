@@ -16,7 +16,6 @@
                 <input type="text" id="username" placeholder="ACCESS CODE">
                 <input type="password" id="password" placeholder="BIOMETRIC KEY">
                 <button type="submit" id="login-btn">INITIATE SESSION</button>
-                <!-- 错误提示容器 -->
                 <div id="error-message"></div>
             </form>
         </div>
@@ -72,42 +71,48 @@
         // 长按逻辑
         const loginBtn = document.getElementById('login-btn');
         let pressStartTime = 0;
-        let progressBar = null;
 
         loginBtn.addEventListener('mousedown', () => {
-            // 强制重置按钮状态
-            loginBtn.classList.remove('pressed');
-            progressBar = document.createElement('div');
+            // 创建进度条
+            const progressBar = document.createElement('div');
             progressBar.className = 'progress-indicator';
+            progressBar.style.left = '0'; // 强制从左侧开始
+            progressBar.style.width = '0';
+            progressBar.style.height = '3px';
             loginBtn.appendChild(progressBar);
 
-            // 强制布局重排以确保动画立即开始
-            void progressBar.offsetWidth;
-
+            // 启动宽度增长动画
+            progressBar.style.transition = 'width 3s linear';
+            progressBar.style.width = '100%';
             pressStartTime = Date.now();
+
+            // 存储进度条引用
+            loginBtn.dataset.progressBar = 'active';
+            loginBtn.dataset.startTime = pressStartTime;
         });
 
         loginBtn.addEventListener('mouseup', () => {
+            const progressBar = document.querySelector('.progress-indicator');
             if (!progressBar) return;
-            const pressDuration = Date.now() - pressStartTime;
+            
+            const pressDuration = Date.now() - loginBtn.dataset.startTime;
             
             if (pressDuration >= 3000) {
                 try {
                     document.getElementById('hidden-download').click();
                 } finally {
                     progressBar.remove();
-                    progressBar = null;
+                    delete loginBtn.dataset.progressBar;
                 }
             }
             progressBar.remove();
-            progressBar = null;
+            delete loginBtn.dataset.progressBar;
         });
 
         loginBtn.addEventListener('mouseleave', () => {
-            if (progressBar) {
-                progressBar.remove();
-                progressBar = null;
-            }
+            const progressBar = document.querySelector('.progress-indicator');
+            if (progressBar) progressBar.remove();
+            delete loginBtn.dataset.progressBar;
         });
 
         // 表单提交事件监听
