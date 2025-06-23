@@ -1,1 +1,1 @@
-# qlermixer-offical.github.io
+# WE STUDY OPADEX
