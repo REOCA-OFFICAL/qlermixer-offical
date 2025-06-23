@@ -1,4 +1,4 @@
-/* terminal.css */
+/* terminal.css 增强版 */
 body {
     background-color: #0d0d0d;
     color: #00ff00;
@@ -90,12 +90,6 @@ button:hover {
     transition: background 0.3s, color 0.3s;
 }
 
-#login-btn.pressed {
-    background: #006600 !important;
-    box-shadow: 0 0 8px #00ff00;
-}
-
-/* 精准3秒进度条 */
 .progress-indicator {
     position: absolute;
     bottom: 0;
@@ -103,18 +97,14 @@ button:hover {
     height: 3px;
     width: 100%;
     background: linear-gradient(to right, #00ff00, #009900);
-    transform: scaleX(0);
-    transform-origin: left;
     animation: loading 3s linear forwards;
 }
 
-/* 精确控制动画 */
 @keyframes loading {
     0% { transform: scaleX(0); }
     100% { transform: scaleX(1); }
 }
 
-/* 错误消息样式 */
 #error-message {
     margin-top: 15px;
     padding: 10px;
