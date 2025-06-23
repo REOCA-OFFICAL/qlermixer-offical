@@ -1,4 +1,4 @@
-/* terminal.css 完整版 */
+/* terminal.css 终极修复版 */
 body {
     background-color: #0d0d0d;
     color: #00ff00;
@@ -57,7 +57,7 @@ body {
     position: relative;
     z-index: 2;
     min-height: 200px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 input, button {
@@ -109,19 +109,22 @@ button:hover {
 
 #login-btn {
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     transition: background 0.3s, color 0.3s;
     z-index: 2;
 }
 
+/* 进度条终极修复 */
 .progress-indicator {
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: 0; /* 关键修复：强制从左侧开始 */
     height: 3px;
     width: 100%;
     background: linear-gradient(to right, #00ff00, #009900);
     animation: loading 3s linear forwards;
+    transform-origin: left center; /* 关键修复：缩放原点 */
+    z-index: 3; /* 确保在按钮内容之上 */
 }
 
 @keyframes loading {
@@ -129,7 +132,6 @@ button:hover {
     100% { transform: scaleX(1); }
 }
 
-/* 错误提示样式 */
 #error-message {
     margin-top: 15px;
     padding: 10px;
