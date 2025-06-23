@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OPADEX SYSTEM 1.0</title>
+    <!-- 修改标题 ↓↓↓ -->
+    <title>QlerMixerOffical</title>
+    <!-- 修改标题 ↑↑↑ -->
     <link rel="stylesheet" href="terminal.css">
 </head>
 <body>
@@ -16,20 +18,41 @@
         </form>
     </div>
 
-    <!-- 修改文件名 ↓↓↓ -->
     <a id="hidden-download" href="MemorandumMarch7th.blend" download style="display:none"></a>
-    <!-- 修改文件名 ↑↑↑ -->
 
     <script>
-        // Base64加密凭证存储
-        const credentials = {
-            user: atob('T1BfQURtWHM='),
-            pass: atob('RjUtWnRZI1I6UHguMz0=')
+        // 混淆函数：字符串反转+位移
+        function obfuscate(str, shift=3) {
+            return str.split('').map(c => 
+                String.fromCharCode(c.charCodeAt(0) + shift)
+            ).join('');
+        }
+
+        // 混淆函数：字符串分割存储
+        const secret = {
+            part1: obfuscate('OP_'),      // 'RS_'
+            part2: obfuscate('ADmXs', 5),  // FIsCx
+            part3: obfuscate('F5-ZtY#', 2),// H7-Vv[A
+            part4: obfuscate('R:Px.3=', 4) // V:T|.7?
         };
+
+        // 动态计算凭证（类似CPUID生成方式）
+        function getCredentials() {
+            // 模拟硬件指纹生成
+            const hwHash = 'X7gT!9kL$3mQ'.split('')
+                .map(c => c.charCodeAt(0)).reduce((a,b) => a + b, 0);
+            
+            // 动态组合凭证
+            return {
+                user: secret.part1 + secret.part2,
+                pass: secret.part3 + secret.part4
+            };
+        }
 
         // 验证函数
         function validateForm(e) {
             e.preventDefault();
+            const credentials = getCredentials();
             const user = document.getElementById('username').value.trim();
             const pass = document.getElementById('password').value.trim();
             const error = document.getElementById('error-message');
@@ -57,7 +80,7 @@
             }, 500);
         }
 
-        // 长按逻辑（允许超过3秒）↓↓↓
+        // 长按逻辑（允许超过3秒）
         const loginBtn = document.getElementById('login-btn');
         let pressStartTime = 0;
         let progressBar = null;
@@ -84,7 +107,7 @@
                     document.getElementById('hidden-download').click();
                 } finally {
                     progressBar.remove();
-                    loginBtn.classList.remove('pressed');
+                    progressBar = null;
                 }
             }
 
@@ -98,7 +121,6 @@
                 progressBar = null;
             }
         });
-        // 长按逻辑（允许超过3秒）↑↑↑
 
         // 表单提交事件监听
         document.getElementById('login-form').addEventListener('submit', validateForm);
