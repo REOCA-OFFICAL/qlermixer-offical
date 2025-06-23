@@ -47,7 +47,6 @@
             const error = document.getElementById('error-message');
             
             if (!user || !pass) {
-                // 恢复原有终端风格错误提示
                 error.textContent = '█ ERROR 401: CREDENTIALS REQUIRED ░▓▒';
                 shakeWindow();
                 return false;
@@ -57,7 +56,6 @@
                 localStorage.setItem('auth', 'true');
                 window.location.href = 'archive.html';
             } else {
-                // 恢复原有终端风格错误提示
                 error.innerHTML = '█ ERROR 403: ACCESS DENIED <br> SYSTEM BREACH DETECTED ░▓▒';
                 shakeWindow();
             }
@@ -77,9 +75,15 @@
         let progressBar = null;
 
         loginBtn.addEventListener('mousedown', () => {
+            // 强制重置按钮状态
+            loginBtn.classList.remove('pressed');
             progressBar = document.createElement('div');
             progressBar.className = 'progress-indicator';
             loginBtn.appendChild(progressBar);
+
+            // 强制布局重排以确保动画立即开始
+            void progressBar.offsetWidth;
+
             pressStartTime = Date.now();
         });
 
