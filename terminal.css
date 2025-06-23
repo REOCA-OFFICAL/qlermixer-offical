@@ -1,4 +1,4 @@
-/* terminal.css 最终缓动优化版 */
+/* terminal.css 最终速度优化版 */
 body {
     background-color: #0d0d0d;
     color: #00ff00;
@@ -24,7 +24,7 @@ body {
         rgba(0, 255, 0, 0.2) 80%,
         rgba(0, 0, 0, 0) 100%
     );
-    animation: scan 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation: scan 5s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* 从4s增加到5s */
     z-index: 0;
     pointer-events: none;
     transform: translateY(-100%);
@@ -32,9 +32,9 @@ body {
 
 @keyframes scan {
     0% { transform: translateY(-100%); }    /* 从屏幕上方进入 */
-    10% { transform: translateY(0); }        /* 快速进入视口 */
-    90% { transform: translateY(100vh); }    /* 快速离开视口 */
-    100% { transform: translateY(100vh); }   /* 保持在底部之外 */
+    10% { transform: translateY(0); }       /* 快速进入视口 */
+    90% { transform: translateY(100vh); }   /* 快速离开视口 */
+    100% { transform: translateY(100vh); }  /* 保持在底部之外 */
 }
 
 .terminal-container {
