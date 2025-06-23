@@ -1,4 +1,4 @@
-/* terminal.css 最终速度优化版 */
+/* terminal.css 完整版 */
 body {
     background-color: #0d0d0d;
     color: #00ff00;
@@ -24,17 +24,17 @@ body {
         rgba(0, 255, 0, 0.2) 80%,
         rgba(0, 0, 0, 0) 100%
     );
-    animation: scan 5s cubic-bezier(0.4, 0, 0.6, 1) infinite; /* 从4s增加到5s */
+    animation: scan 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     z-index: 0;
     pointer-events: none;
     transform: translateY(-100%);
 }
 
 @keyframes scan {
-    0% { transform: translateY(-100%); }    /* 从屏幕上方进入 */
-    10% { transform: translateY(0); }       /* 快速进入视口 */
-    90% { transform: translateY(100vh); }   /* 快速离开视口 */
-    100% { transform: translateY(100vh); }  /* 保持在底部之外 */
+    0% { transform: translateY(-100%); }
+    10% { transform: translateY(0); }
+    90% { transform: translateY(100vh); }
+    100% { transform: translateY(100vh); }
 }
 
 .terminal-container {
@@ -57,6 +57,7 @@ body {
     position: relative;
     z-index: 2;
     min-height: 200px;
+    overflow: hidden;
 }
 
 input, button {
@@ -108,7 +109,7 @@ button:hover {
 
 #login-btn {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: background 0.3s, color 0.3s;
     z-index: 2;
 }
@@ -126,4 +127,15 @@ button:hover {
 @keyframes loading {
     0% { transform: scaleX(0); }
     100% { transform: scaleX(1); }
+}
+
+/* 错误提示样式 */
+#error-message {
+    margin-top: 15px;
+    padding: 10px;
+    background: #2a2a2a;
+    border-left: 3px solid #00ff00;
+    white-space: pre-wrap;
+    font-size: 0.9em;
+    min-height: 40px;
 }
