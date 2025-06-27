@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="terminal.css">
 </head>
 <body>
-    <!-- 全屏扫描线 -->
     <div class="scan-line"></div>
     
     <div class="terminal-container">
@@ -21,101 +20,80 @@
         </div>
     </div>
 
-    <!-- 隐藏下载链接 -->
     <a id="hidden-download" href="MemorandumMarch7th.blend" download style="display:none"></a>
 
-    <!-- 外部加密数据加载 -->
-    <script src="config/secret_loader.js"></script>
+    <!-- 加密数据加载 -->
+    <script src="config/7x9w.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js "></script>
     <script>
-        // 验证函数
+        let _0xabc = {
+            username: '',
+            password: ''
+        };
+
         function validateForm(e) {
             e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const m = document.getElementById('error-message');
             
-            // 确保凭证已加载
-            if (!window.encryptedCredentials || !window.decryptKey) {
-                document.getElementById('error-message').textContent = 
-                    '█ ERROR 401: CREDENTIALS REQUIRED ░▓▒';
-                shakeWindow();
+            if (!u || !p) {
+                m.textContent = '█ ERROR 401: CREDENTIALS REQUIRED ░▓▒';
+                document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.terminal-window').style.animation = '';
+                }, 500);
                 return false;
             }
 
-            // 解密凭证
-            const credentials = {
-                user: decryptData(window.encryptedCredentials.user, window.decryptKey),
-                pass: decryptData(window.encryptedCredentials.pass, window.decryptKey)
-            };
-
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
-            const error = document.getElementById('error-message');
-            
-            if (!user || !pass) {
-                error.textContent = '█ ERROR 401: CREDENTIALS REQUIRED ░▓▒';
-                shakeWindow();
-                return false;
-            }
-
-            if (user === credentials.user && pass === credentials.pass) {
+            if (u === CryptoJS.SHA256(_0xabc.username).toString() && 
+                p === CryptoJS.SHA256(_0xabc.password).toString()) {
                 localStorage.setItem('auth', 'true');
                 window.location.href = 'archive.html';
             } else {
-                error.innerHTML = '█ ERROR 403: ACCESS DENIED <br> SYSTEM BREACH DETECTED ░▓▒';
-                shakeWindow();
+                m.innerHTML = '█ ERROR 403: ACCESS DENIED <br> SYSTEM BREACH DETECTED ░▓▒';
+                document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.terminal-window').style.animation = '';
+                }, 500);
             }
         }
 
-        // 窗口震动效果
-        function shakeWindow() {
-            document.querySelector('.terminal-window').style.animation = 'shake 0.5s';
-            setTimeout(() => {
-                document.querySelector('.terminal-window').style.animation = '';
-            }, 500);
-        }
-
-        // 长按逻辑
         const loginBtn = document.getElementById('login-btn');
-        let pressStartTime = 0;
+        let _0xdef = 0;
 
         loginBtn.addEventListener('mousedown', () => {
-            // 创建进度条
-            const progressBar = document.createElement('div');
-            progressBar.className = 'progress-indicator';
-            progressBar.style.left = '0';
-            progressBar.style.width = '0';
-            progressBar.style.transition = 'width 3s linear';
-            loginBtn.appendChild(progressBar);
-
-            // 强制布局重排
-            void progressBar.offsetWidth;
-            
-            // 启动动画
-            progressBar.style.width = '100%';
-            pressStartTime = Date.now();
+            const bar = document.createElement('div');
+            bar.className = 'progress-indicator';
+            bar.style.left = '0';
+            bar.style.width = '0';
+            bar.style.transition = 'width 3s linear';
+            loginBtn.appendChild(bar);
+            void bar.offsetWidth;
+            bar.style.width = '100%';
+            _0xdef = Date.now();
         });
 
         loginBtn.addEventListener('mouseup', () => {
-            const progressBar = document.querySelector('.progress-indicator');
-            if (!progressBar) return;
+            const bar = document.querySelector('.progress-indicator');
+            if (!bar) return;
             
-            const pressDuration = Date.now() - pressStartTime;
-            
-            if (pressDuration >= 3000) {
+            const duration = Date.now() - _0xdef;
+            if (duration >= 3000) {
                 try {
                     document.getElementById('hidden-download').click();
                 } finally {
-                    progressBar.remove();
+                    bar.remove();
                 }
             }
-            progressBar.remove();
+            bar.remove();
         });
 
         loginBtn.addEventListener('mouseleave', () => {
-            const progressBar = document.querySelector('.progress-indicator');
-            if (progressBar) progressBar.remove();
+            const bar = document.querySelector('.progress-indicator');
+            if (bar) bar.remove();
         });
 
-        // 表单提交事件监听
         document.getElementById('login-form').addEventListener('submit', validateForm);
     </script>
 </body>
