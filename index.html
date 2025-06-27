@@ -22,22 +22,18 @@
 
     <a id="hidden-download" href="MemorandumMarch7th.blend" download style="display:none"></a>
 
-    <!-- 加密数据加载 -->
     <script src="config/7x9w.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js "></script>
     <script>
-        // 凭证存储容器
         window._0xabc = {
             username: '',
             password: ''
         };
 
-        // 解密函数
         function decryptData(data) {
             return atob(data).replace('Sender_key: ', '');
         }
 
-        // 验证函数
         function validateForm(e) {
             e.preventDefault();
             const u = document.getElementById('username').value;
@@ -65,7 +61,6 @@
             }
         }
 
-        // 长按逻辑
         const loginBtn = document.getElementById('login-btn');
         let pressStartTime = 0;
 
@@ -102,14 +97,12 @@
             if (bar) bar.remove();
         });
 
-        // 异步加载完成回调
         window.handleCredentialLoad = function(data) {
             window._0xabc.username = decryptData(data.u);
             window._0xabc.password = decryptData(data.p);
             window._0xabc.loaded = true;
         };
 
-        // 表单提交监听
         document.getElementById('login-form').addEventListener('submit', validateForm);
     </script>
 </body>
