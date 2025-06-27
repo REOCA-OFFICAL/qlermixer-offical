@@ -2,22 +2,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- 修改标题 ↓↓↓ -->
     <title>QlerMixerOffical</title>
-    <!-- 修改标题 ↑↑↑ -->
     <link rel="stylesheet" href="terminal.css">
 </head>
 <body>
-    <div class="terminal-window archive">
-        <h1>█▒▓░ DATABASE QUERY ░▓▒█</h1>
-        <div class="search-container">
-            <input type="text" id="query" placeholder="ENTER FILE NAME">
-            <button onclick="searchFile()">EXECUTE</button>
+    <div class="terminal-container">
+        <div class="terminal-window">
+            <h1>█▒▓░ DATABASE QUERY ░▓▒█</h1>
+            <div class="search-container">
+                <input type="text" id="query" placeholder="ENTER FILE NAME">
+                <button onclick="searchFile()">EXECUTE</button>
+            </div>
+            <div id="results" class="results"></div>
         </div>
-        <div id="results" class="results"></div>
     </div>
 
     <script>
+        // 模拟数据库
         const database = {
             "PROJECT_NEXUS": "nexus_report.pdf",
             "TEST_SUBJECT_7": "subject7_logs.zip"
