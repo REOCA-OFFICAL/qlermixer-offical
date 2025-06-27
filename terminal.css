@@ -84,35 +84,6 @@ button:hover {
     cursor: pointer;
 }
 
-.download-link {
-    display: inline-block;
-    text-decoration: none;
-    padding: 10px;
-    border: 1px solid #00ff00;
-    border-radius: 3px;
-    transition: all 0.3s;
-}
-
-.download-link:hover {
-    background: #002200;
-    box-shadow: 0 0 5px #00ff00;
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-
-#login-btn {
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s, color 0.3s;
-    z-index: 2;
-}
-
 .progress-indicator {
     position: absolute;
     bottom: 0;
