@@ -10,7 +10,6 @@ body {
     position: relative;
 }
 
-/* 全屏扫描线样式 */
 .scan-line {
     position: fixed;
     top: 0;
